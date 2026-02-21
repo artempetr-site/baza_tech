@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Експлуатація та Ремонт Техніки</title>
+    <style>
+        :root {
+            --bg-body: #f8fafc;
+            --bg-sidebar: #0f172a;
+            --bg-sidebar-hover: #1e293b;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --text-main: #334155;
+            --text-light: #f1f5f9;
+            --card-bg: #ffffff;
+            --border: #e2e8f0;
+            --table-head: #f8fafc;
+            --warning-bg: #fffbeb;
+            --warning-text: #b45309;
+            --warning-border: #f59e0b;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            flex-direction: row;
+        }
+
+        /* Responsive Sidebar */
+        .sidebar {
+            width: 340px;
+            background-color: var(--bg-sidebar);
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.15);
+            z-index: 20;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            padding: 25px 15px;
+            margin: 0;
+            background-color: var(--accent);
+            font-size: 20px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #fff;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            overflow-y: auto;
+        }
+
+        .nav-links li {
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .nav-links a {
+            display: block;
+            padding: 16px 25px;
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-weight: 600;
+            font-size: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: var(--bg-sidebar-hover);
+            color: #fff;
+            border-left: 6px solid var(--accent);
+            padding-left: 19px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex-grow: 1;
+            padding: 40px;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+            position: relative;
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 45px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            margin-bottom: 40px;
+            border: 1px solid var(--border);
+        }
+
+        .card h1 {
+            color: var(--bg-sidebar);
+            border-bottom: 4px solid var(--accent);
+            padding-bottom: 15px;
+            margin-top: 0;
+            font-size: 34px;
+        }
+
+        .card h3 {
+            color: var(--bg-sidebar);
+            margin-top: 35px;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            background: #f8fafc;
+            padding: 10px 15px;
+            border-radius: 6px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .card p, .card ul {
+            line-height: 1.8;
+            color: #475569;
+            font-size: 16px;
+        }
+
+        .card li {
+            margin-bottom: 12px;
+            padding-left: 5px;
+        }
+
+        /* Image Gallery */
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 35px 0;
+        }
+
+        .img-box {
+            width: 100%;
+            height: 240px;
+            background-color: #f1f5f9;
+            border: 2px dashed #cbd5e1;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-weight: 600;
+            text-align: center;
+            overflow: hidden;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.02);
+            padding: 10px;
+        }
+        .img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Responsive Tables */
+        .table-responsive {
+            overflow-x: auto;
+            margin-top: 25px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 15px;
+            min-width: 700px;
+        }
+
+        th, td {
+            padding: 14px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            border-right: 1px solid var(--border);
+        }
+        
+        td:last-child, th:last-child { border-right: none; }
+
+        th {
+            background-color: var(--table-head);
+            color: var(--bg-sidebar);
+            font-weight: 700;
+        }
+
+        tr:nth-child(even) { background-color: #f8fafc; }
+        tr:hover { background-color: #f1f5f9; }
+
+        .badge {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: var(--accent);
+            color: #fff;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+        }
+
+        .alert-warning {
+            background-color: var(--warning-bg);
+            color: var(--warning-text);
+            padding: 20px;
+            border-left: 6px solid var(--warning-border);
+            border-radius: 6px;
+            margin: 25px 0;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        /* Tabs styling */
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid var(--border);
+            margin-top: 35px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            background: #f8fafc;
+            border-radius: 8px 8px 0 0;
+            padding-top: 5px;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 14px 24px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            color: #64748b;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s;
+        }
+
+        .tab-btn:hover { color: var(--accent); }
+        .tab-btn.active {
+            color: var(--accent);
+            border-bottom: 3px solid var(--accent);
+            background: #fff;
+            border-radius: 8px 8px 0 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.02);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .tab-content.active { display: block; }
+
+        /* Mobile Menu Button */
+        .mobile-toggle {
+            display: none;
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            z-index: 100;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        /* ======== РЕСПОНСИВНІСТЬ ======== */
+        @media (max-width: 1200px) {
+            .image-gallery { grid-template-columns: repeat(2, 1fr); }
+            .img-box:last-child { grid-column: span 2; }
+        }
+
+        @media (max-width: 992px) {
+            .sidebar { width: 260px; }
+            .main-content { padding: 20px; }
+            .card { padding: 30px; }
+        }
+
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            .mobile-toggle { display: block; }
+            .sidebar {
+                position: fixed;
+                left: -100%;
+                top: 0;
+                height: 100%;
+                width: 300px;
+            }
+            .sidebar.open { left: 0; }
+            .main-content {
+                width: 100%;
+                padding: 70px 15px 20px 15px;
+            }
+            .image-gallery { grid-template-columns: 1fr; }
+            .img-box:last-child { grid-column: auto; }
+            .tabs { flex-direction: column; border-bottom: none; background: transparent; }
+            .tab-btn {
+                width: 100%;
+                text-align: left;
+                border: 1px solid var(--border);
+                margin-bottom: 5px;
+                background: #fff;
+                border-radius: 6px;
+            }
+            .tab-btn.active {
+                border-left: 5px solid var(--accent);
+                border-bottom: 1px solid var(--border);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="mobile-toggle" onclick="toggleMenu()">☰ Меню Техніки</button>
+
+    <div class="sidebar" id="sidebar">
+        <h2>База Техніки</h2>
+        <ul class="nav-links">
+            <li><a href="#" class="active" onclick="showSection('btr')">БТР-70Т <span>▶</span></a></li>
+            <li><a href="#" onclick="showSection('kraz')">КрАЗ-6322 <span>▶</span></a></li>
+            <li><a href="#" onclick="showSection('ural')">Урал-4320 <span>▶</span></a></li>
+            <li><a href="#" onclick="showSection('xtz')">ХТЗ-150К <span>▶</span></a></li>
+            <li><a href="#" onclick="showSection('gaz')">ГАЗель (2705/3221) <span>▶</span></a></li>
+            <li><a href="#" onclick="showSection('cat')">Caterpillar 428F <span>▶</span></a></li>
+            <li><a href="#" onclick="showSection('sarm')">Інженерна (САРМ, БАТ) <span>▶</span></a></li>
+            <li><a href="#" onclick="showSection('water')">Форсування та Вода <span>▶</span></a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+
+        <div id="btr" class="content-section active">
+            <div class="card">
+                <span class="badge">Броньована Військова Техніка</span>
+                <h1>Бронетранспортер БТР-70Т</h1>
+                <p>Модернізована бойова колісна плаваюча машина (8х8). Призначена для вогневої підтримки та транспортування особового складу (10 осіб). Оснащена двома двигунами та водометним рушієм.</p>
+                
+                <div class="image-gallery">
+                    <div class="img-box"><img src="img\btr1.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img\btr2.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img\btr3.jpg" alt=" "></div>
+                </div>
+
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchTab(event, 'btr-1')">Загальні ТТХ</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'btr-2')">Озброєння та Зв'язок</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'btr-3')">Водомет та Рух</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'btr-4')">ППО та ФВУ</button>
+                </div>
+
+                <div id="btr-1" class="tab-content active">
+                    <h3>Тактико-технічні характеристики</h3>
+                    <div class="table-responsive">
+                        <table>
+                            <tr><th>Параметр</th><th>Значення</th></tr>
+                            <tr><td>Споряджена маса</td><td>12 000 кг (± 3%)</td></tr>
+                            <tr><td>Кліренс (дорожній просвіт)</td><td>475 мм</td></tr>
+                            <tr><td>Макс. швидкість по шосе</td><td>75 км/год</td></tr>
+                            <tr><td>Макс. швидкість на плаву</td><td>9 - 10 км/год</td></tr>
+                            <tr><td>Двигуни</td><td>Два дизельні 4-тактні агрегати (сумарно 312 к.с.)</td></tr>
+                            <tr><td>Підвіска</td><td>Незалежна, торсіонна з гідравлічними амортизаторами</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="btr-2" class="tab-content">
+                    <h3>Озброєння та Комунікація</h3>
+                    <ul>
+                        <li><strong>Основна зброя:</strong> 14,5-мм великокаліберний кулемет КПВТ. Дальність ефективної стрільби по наземних цілях — до 2000 м, по повітряних — до 1000 м.</li>
+                        <li><strong>Допоміжна зброя:</strong> 7,62-мм спарений кулемет ПКТ. Дальність стрільби до 1500 м.</li>
+                        <li><strong>Прицільні пристрої:</strong> Перископічний приціл ПП-61АМ для наведення зброї.</li>
+                        <li><strong>Зв'язок:</strong> УКХ-радіостанція (зазвичай типу Р-123М або сучасні цифрові аналоги) для зовнішнього зв'язку; танковий переговорний пристрій (ТПУ) на 3 абонентів для внутрішнього зв'язку.</li>
+                    </ul>
+                </div>
+
+                <div id="btr-3" class="tab-content">
+                    <h3>Рух на воді (Водомет)</h3>
+                    <p>Для подолання водних перешкод БТР-70Т оснащено водометним рушієм, який встановлено у кормовій частині корпусу.</p>
+                    <ul>
+                        <li><strong>Герметизація:</strong> Перед входом у воду використовується метод «Заклеювання» (ущільнення швів мастиками), піднімається хвилевідбивний щиток попереду машини.</li>
+                        <li><strong>Керування на воді:</strong> Здійснюється поворотом рулів у водометі та одночасним поворотом передніх 4-х коліс.</li>
+                        <li><strong>Трюмні насоси:</strong> Відкачують воду, що потрапляє в корпус через ущільнення.</li>
+                    </ul>
+                </div>
+
+                <div id="btr-4" class="tab-content">
+                    <h3>Системи життєзабезпечення та захисту</h3>
+                    <p><strong>Фільтровентиляційна установка (ФВУ):</strong> Очищає зовнішнє повітря від радіоактивного пилу (РР), бойових отруйних речовин (ОР) і бактеріальних засобів (БЗ). Створює надлишковий тиск (підпір), щоб заражене повітря не проникало через нещільності броні.</p>
+                    <p><strong>Протипожежне обладнання (ППО):</strong> Автоматична система. У разі підвищення температури у відділенні силової установки (двигунів) вище критичної:
+                        1. Термодатчики подають сигнал на релейну коробку (КР40-1С).<br>
+                        2. Автоматично глушаться обидва двигуни.<br>
+                        3. Закриваються жалюзі притоку повітря.<br>
+                        4. Відкривається балон і подається вогнегасна суміш (фреон).
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div id="kraz" class="content-section">
+            <div class="card">
+                <span class="badge">Вантажна Техніка Високої Прохідності</span>
+                <h1>Автомобілі КрАЗ-6322, 63221, 6446</h1>
+                <p>Трьохосьовий гігант (6х6). Здатен транспортувати вантажі, солдатів, артилерійські системи та важкі причепи повному бездоріжжі, сніговій цілині та сипучих пісках.</p>
+                
+                <div class="image-gallery">
+                    <div class="img-box"><img src="img\kr1.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img\kr2.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img\kr3.jpg" alt=" "></div>
+                </div>
+
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchTab(event, 'kraz-1')">Вантаж та Маси</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'kraz-2')">Двигун та Трансмісія</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'kraz-3')">Лебідка та Буксирування</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'kraz-4')">Електро та Пневматика</button>
+                </div>
+
+                <div id="kraz-1" class="tab-content active">
+                    <h3>Масо-габаритні показники</h3>
+                    <div class="table-responsive">
+                        <table>
+                            <tr><th>Модель</th><th>Споряджена маса</th><th>Вантажопідйомність</th><th>Повна маса причепа</th></tr>
+                            <tr><td>КрАЗ-6322 (бортовий)</td><td>12 700 кг</td><td>10 000 - 12 200 кг</td><td>До 30 000 кг (по шосе)</td></tr>
+                            <tr><td>КрАЗ-6446 (тягач)</td><td>11 400 кг</td><td>Навантаження на сідло 17 т</td><td>Напівпричіп до 40 000 кг</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="kraz-2" class="tab-content">
+                    <h3>Двигун і Ходова Частина</h3>
+                    <ul>
+                        <li><strong>Прогрів перед рухом:</strong> Мінімальна температура охолоджуючої рідини перед зрушенням з місця — +40°С. Оптимальна робоча температура: 80-95°С.</li>
+                        <li><strong>Роздавальна коробка:</strong> Механічна, двоступенева, з міжосьовим диференціалом, що блокується. <strong>Правило:</strong> Блокувати диференціал дозволено ВИКЛЮЧНО на слизьких ґрунтах. Перемикати передачі в роздатці можна тільки після повної зупинки авто.</li>
+                        <li><strong>Повітряний фільтр:</strong> Двоступеневий (сухого типу з двома паперовими елементами) та блок циклонів з ежекційним відсмоктуванням пилу через вихлопну трубу.</li>
+                    </ul>
+                </div>
+
+                <div id="kraz-3" class="tab-content">
+                    <h3>Лебідка та Буксирування</h3>
+                    <p>Автомобіль може оснащуватися барабанною лебідкою для самовитягування та витягування застряглої техніки.</p>
+                    <ul>
+                        <li><strong>Максимальне тягове зусилля:</strong> 120 кН (близько 12 тонн).</li>
+                        <li><strong>Довжина троса:</strong> близько 50 метрів (з видачею троса вперед або назад через систему роликів).</li>
+                        <li><strong>Захист:</strong> Запобіжний штифт лебідки зрізається при перевищенні допустимого навантаження, щоб не розірвати трос або карданний вал приводу.</li>
+                    </ul>
+                </div>
+
+                <div id="kraz-4" class="tab-content">
+                    <h3>Електрообладнання та Пневмосистема</h3>
+                    <ul>
+                        <li><strong>Напруга мережі:</strong> 24 Вольта. Використовуються дві акумуляторні батареї 6СТ-190.</li>
+                        <li><strong>Пневмосистема (Гальма):</strong> Робочий тиск в системі гальм становить 0,65-0,8 МПа (6,5-8,0 кгс/см²). Перед рухом тиск має бути не менше 4,0 кгс/см².</li>
+                        <li><strong>Електрофакельний пристрій (ЕФУ):</strong> Використовується для полегшення пуску дизеля в морози (до -25°С). Забороняється використовувати ЕФУ разом з ефірними засобами пуску (може статися вибух в колекторі).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="ural" class="content-section">
+            <div class="card">
+                <span class="badge">Багатоцільові Вантажівки</span>
+                <h1>Урал-4320 (Мод. 10 та 31)</h1>
+                <p>Еталон прохідності. Завдяки системі регулювання тиску в шинах та потужним дизелям ЯМЗ, Урал-4320 здатен рухатись по розмитих ґрунтових дорогах, сніговій цілині та долати броди глибиною до 1,5 м.</p>
+                
+                <div class="image-gallery">
+                    <div class="img-box"><img src="img\ur1.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img\ur3.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img\ur2.jpg" alt=" "></div>
+                </div>
+
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchTab(event, 'ural-1')">Двигуни ЯМЗ</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'ural-2')">Підвіска та Шини</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'ural-3')">Кермо та Гальма</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'ural-4')">Норми та Ресурс</button>
+                </div>
+
+                <div id="ural-1" class="tab-content active">
+                    <h3>Силові агрегати (ЯМЗ)</h3>
+                    <div class="table-responsive">
+                        <table>
+                            <tr><th>Параметр</th><th>Мод. Урал-4320-10</th><th>Мод. Урал-4320-31</th></tr>
+                            <tr><td>Модель двигуна</td><td>ЯМЗ-236М2 (V6, дизель)</td><td>ЯМЗ-238М2 (V8, дизель)</td></tr>
+                            <tr><td>Потужність</td><td>~180 к.с.</td><td>~240 к.с.</td></tr>
+                            <tr><td>Охолодження</td><td>Рідинне, закритого типу</td><td>Рідинне, закритого типу</td></tr>
+                            <tr><td>Витрата палива (60 км/год)</td><td>~32-35 л / 100 км</td><td>~36-38 л / 100 км</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="ural-2" class="tab-content">
+                    <h3>Колеса, Шини та Прохідність</h3>
+                    <ul>
+                        <li><strong>Система підкачування шин:</strong> Однопровідна. Керується з кабіни водія. Дозволяє знижувати тиск у шинах під час руху по піску, снігу або болоту для збільшення плями контакту і запобігання закопуванню авто.</li>
+                        <li><strong>Шини:</strong> Моделі ОИ-25 (14.00-20) або КАМА-УРАЛ (390/95R20). При монтажі зазор замочного кільця має бути строго 45-55 мм.</li>
+                        <li><strong>Брід:</strong> Завдяки герметизації агрегатів і виведенню сапунів наверх, машина долає водні перешкоди (брід) глибиною до 1,5 метра (після відповідної підготовки і герметизації картера зчеплення).</li>
+                    </ul>
+                </div>
+
+                <div id="ural-3" class="tab-content">
+                    <h3>Гальмівна система та Рульове</h3>
+                    <ul>
+                        <li><strong>Рульовий механізм:</strong> Гвинт – кулькова гайка – рейка – сектор. Має гідропідсилювач. Момент для провертання гвинта в середньому положенні становить 2,4 - 3,5 Н·м.</li>
+                        <li><strong>Робочі гальма:</strong> Двоконтурний пневмогідравлічний привід (повітря тисне на гідравлічні циліндри). </li>
+                        <li><strong>Стоянкове гальмо:</strong> Барабанного типу, встановлене на вихідному валу роздавальної коробки. При його затягуванні пневмоклапан подає повітря і на гальма причепа.</li>
+                    </ul>
+                </div>
+
+                <div id="ural-4" class="tab-content">
+                    <h3>Гарантійний ресурс та Утилізація</h3>
+                    <p>Ресурс автомобіля до першого капітального ремонту складає <strong>не менше 250 000 км</strong> пробігу при дотриманні правил експлуатації та вчасного ТО.</p>
+                    <div class="alert-warning">
+                        <strong>Правила утилізації (після вичерпання ресурсу 10+ років):</strong> Автомобіль необхідно вимити, зняти АКБ, злити електроліт у спецпосуд, злити охолоджуючу рідину (тосол/антифриз) та всі трансмісійні і моторні масла у відповідні ємності для уникнення забруднення екології.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="xtz" class="content-section">
+            <div class="card">
+                <span class="badge">Важкі Трактори (Сільгосп / Транспорт)</span>
+                <h1>Трактор ХТЗ-150К-09-25</h1>
+                <p>Сільськогосподарський трактор 3-4 тягового класу з шарнірно-зчленованою рамою (ламається навпіл для повороту). Ідеальний для енергоємного обробітку ґрунту (оранка) та буксування важких сільгосп-причепів.</p>
+                
+                <div class="image-gallery">
+                    <div class="img-box"><img src="img\xt1.png" alt=" "></div>
+                    <div class="img-box"><img src="img\xt2.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img\xt3.jpg" alt=" "></div>
+                </div>
+
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchTab(event, 'xtz-1')">Трансмісія та Швидкості</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'xtz-2')">Гідравліка та ВОМ</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'xtz-3')">Кабіна та Електрика</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'xtz-4')">Моменти затягування</button>
+                </div>
+
+                <div id="xtz-1" class="tab-content active">
+                    <h3>Коробка передач (Перемикання на ходу)</h3>
+                    <p>Особливість ХТЗ-150К — механічна КПП з гідропідтискними муфтами. Вона дозволяє перемикати передачі в межах одного діапазону <strong>без розриву потоку потужності</strong> (не витискаючи зчеплення).</p>
+                    <div class="table-responsive">
+                        <table>
+                            <tr><th>Діапазон</th><th>Тип робіт</th><th>Швидкість (км/год)</th></tr>
+                            <tr><td>І діапазон</td><td>Важка оранка, розпушування</td><td>0,11 - 6,03</td></tr>
+                            <tr><td>ІІ діапазон</td><td>Культивація, посів</td><td>7,08 - 12,67</td></tr>
+                            <tr><td>ІІІ діапазон</td><td>Транспорт (ґрунт), збирання</td><td>15,70 - 22,40</td></tr>
+                            <tr><td>IV діапазон</td><td>Транспорт (шосе)</td><td>19,10 - 44,50</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="xtz-2" class="tab-content">
+                    <h3>Гідронавісна система та ВВП (ВОМ)</h3>
+                    <ul>
+                        <li><strong>Вал відбору потужності (ВОМ):</strong> Незалежний, двошвидкісний. Робочі оберти: 540 об/хв та 1000 об/хв. Призначений для передачі крутного моменту на активні органи сільгоспмашин (сівалки, косарки).</li>
+                        <li><strong>Навісний пристрій:</strong> Задній, з гідравлічним управлінням, дозволяє піднімати і опускати плуги. Оснащено тягово-зчіпними пристроями ТСУ-1-Ж (маятниковий) та ТСУ-2 (вилка).</li>
+                    </ul>
+                </div>
+
+                <div id="xtz-3" class="tab-content">
+                    <h3>Ергономіка кабіни та Клімат</h3>
+                    <p>Кабіна двомісна, герметизована, з шумо- та теплоізоляцією.</p>
+                    <ul>
+                        <li><strong>Кондиціонер:</strong> Оснащений термореле. Привід компресора кондиціонера підключається електромагнітною муфтою автоматично тільки <strong>після</strong> включення вентиляторів випарника (щоб не обморозити радіатор).</li>
+                        <li><strong>Панель приладів:</strong> Містить покажчики тиску масла в двигуні та КПП (в КПП має бути 0,9-1,2 МПа), температури води, вольтметр.</li>
+                    </ul>
+                </div>
+
+                <div id="xtz-4" class="tab-content">
+                    <h3>Допуски та Моменти затягування (Ремонт)</h3>
+                    <p>Для правильного ремонту та обслуговування трактора регламентовані точні зусилля (Н·м / кгс·м):</p>
+                    <ul>
+                        <li>Гайки кріплення коліс: 400-500 Н·м (40-50 кгс·м).</li>
+                        <li>Гайки бугеля горизонтального шарніра рами: 770-950 Н·м.</li>
+                        <li>Гайки кріплення фланців карданних валів: 100-150 Н·м.</li>
+                        <li>Пальці гідроциліндрів рульового управління (повороту рами): 300-350 Н·м.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="gaz" class="content-section">
+            <div class="card">
+                <span class="badge">Комерційний Транспорт</span>
+                <h1>ГАЗель (Фургони 2705 та Мікроавтобуси 3221)</h1>
+                <p>Малогабаритні комерційні авто. Базовий фургон 2705 вміщує до 9 м³ вантажу (максимальна маса 3.5 т). Автобуси 3221 вміщують до 13 пасажирів і використовуються як маршрутні таксі.</p>
+                
+                <div class="image-gallery">
+                    <div class="img-box"><img src="img\gz1.png" alt=" "></div>
+                    <div class="img-box"><img src="img\gz2.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img\gz3.jpeg" alt=" "></div>
+                </div>
+
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchTab(event, 'gaz-1')">Двигуни ЗМЗ/УМЗ</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'gaz-2')">Ходова та Гальма</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'gaz-3')">Ремонтні зазори (Двигун)</button>
+                </div>
+
+                <div id="gaz-1" class="tab-content active">
+                    <h3>Характеристики двигунів</h3>
+                    <p>Машини комплектувалися карбюраторними (і пізніше інжекторними) бензиновими двигунами Заволзького (ЗМЗ) та Ульяновського (УМЗ) заводів.</p>
+                    <div class="table-responsive">
+                        <table>
+                            <tr><th>Двигун</th><th>Об'єм</th><th>Діаметр циліндра х Хід</th><th>Ступінь стиснення</th></tr>
+                            <tr><td>ЗМЗ-4025</td><td>2,445 л</td><td>92 х 92 мм</td><td>6,7 (під бензин А-76)</td></tr>
+                            <tr><td>ЗМЗ-4061 / 4063</td><td>2,28 л</td><td>92 х 86 мм</td><td>9,3 (під бензин А-92)</td></tr>
+                            <tr><td>УМЗ-4215</td><td>2,89 л</td><td>100 х 92 мм</td><td>7,0 або 8,2</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="gaz-2" class="tab-content">
+                    <h3>Підвіска та Гальмівна система</h3>
+                    <ul>
+                        <li><strong>Підвіска передня і задня:</strong> Залежна, на поздовжніх напівеліптичних ресорах. Задня підвіска посилена додатковими ресорами (підресорниками). Амортизатори гідравлічні, телескопічні.</li>
+                        <li><strong>Гальмівні механізми:</strong> Попереду — дискові (вентильовані на пізніх моделях). Ззаду — барабанні.</li>
+                        <li><strong>Привід гальм:</strong> Гідравлічний, двоконтурний, з вакуумним підсилювачем. Має регулятор тиску задніх гальм (так званий «чаклун»), який змінює тиск залежно від завантаження кузова.</li>
+                    </ul>
+                </div>
+
+                <div id="gaz-3" class="tab-content">
+                    <h3>Технічні допуски при капітальному ремонті (Мікрометрія)</h3>
+                    <p>Капремонт зазвичай проводять при падінні компресії, тиску масла або пробігу 150-200 тис. км. Наведені точні посадки з мануалу:</p>
+                    <ul>
+                        <li><strong>Блок циліндрів – гільза:</strong> Посадка з натягом. Отвір блоку: 5 +0,025 мм. Вал (гільза): 5 +0,065 мм. Розрахунковий натяг: 0,010 – 0,065 мм.</li>
+                        <li><strong>Головка блоку (ГБЦ) – втулка клапана:</strong> Отвір ГБЦ: 17 +0,025 мм. Втулка: 17 +0,066 мм. Натяг для запресовки: 0,022 – 0,076 мм.</li>
+                        <li>Обов'язкова теплова обробка (нагрівання ГБЦ) перед запресовкою напрямних втулок.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="cat" class="content-section">
+            <div class="card">
+                <span class="badge">Будівельна та Спецтехніка</span>
+                <h1>Екскаватор-навантажувач Caterpillar 428F</h1>
+                <p>Багатоцільова машина світового класу. Поєднує спереду великий навантажувальний ковш, а ззаду — повноцінну стрілу екскаватора. Відрізняється надзвичайною плавністю гідравліки завдяки системі Load Sensing.</p>
+                
+                <div class="image-gallery">
+                    <div class="img-box"><img src="img\kt1.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img\kt2.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img\kt3.jpg" alt=" "></div>
+                </div>
+
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchTab(event, 'cat-1')">Маси та Двигун</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'cat-2')">Гідравліка та Ковші</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'cat-3')">Технології (E-Coat)</button>
+                </div>
+
+                <div id="cat-1" class="tab-content active">
+                    <h3>Базові характеристики</h3>
+                    <ul>
+                        <li><strong>Експлуатаційна маса:</strong> Від 8 436 кг (базова) до 10 269 кг (максимально завантажена опціями, противагами і телескопічною рукояттю).</li>
+                        <li><strong>Двигун:</strong> Cat 3054C DIT або Cat C4.4 (для країн з жорсткими еко-нормами Stage IIIA). Потужність корисна: від 65 кВт (88 к.с.) до 71 кВт (97 к.с.).</li>
+                        <li><strong>Трансмісія:</strong> З сервоприводом перемикання (до 40 км/год). Може оснащуватись муфтою блокування гідротрансформатора для економії дизеля під час перегонів по дорогах.</li>
+                    </ul>
+                </div>
+
+                <div id="cat-2" class="tab-content">
+                    <h3>Робочі органи та Гідравліка</h3>
+                    <ul>
+                        <li><strong>Гідронасос:</strong> Аксиально-поршневий регульований насос закритого центру (Load Sensing). Видає потік масла строго за потребою, що економить паливо.</li>
+                        <li><strong>Екскаваторна установка:</strong> Глибина копання стандартною рукояттю — 4278 мм. Якщо встановлена <strong>телескопічна рукоять</strong>, глибина збільшується до 5274 мм.</li>
+                        <li><strong>Навантажувальний ковш:</strong> Спереду встановлюється багатоцільовий ковш, здатний працювати як бульдозерний відвал, грейфер або звичайний ківш.</li>
+                    </ul>
+                </div>
+
+                <div id="cat-3" class="tab-content">
+                    <h3>Захист та Комфорт</h3>
+                    <p><strong>E-Coat (Електрофорезне покриття):</strong> Всі металеві деталі рами та кузова проходять хімічну підготовку та занурення у ванну з антикорозійним складом (електроосадження). Це повністю запобігає появі іржі, подряпин та сколів навіть у жорстких будівельних умовах.</p>
+                    <p><strong>Ride Control:</strong> Опціональна система регулювання плавності ходу (гідропневматичні акумулятори), яка гасить коливання стріли навантажувача під час руху по ямах, не даючи матеріалу висипатися з ковша.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="sarm" class="content-section">
+            <div class="card">
+                <span class="badge">Рятувальні та Інженерні Війська</span>
+                <h1>Інженерні Машини (САРМ, БАТ, МДК)</h1>
+                <p>Комплекси для усунення наслідків катастроф, розбору бетонних завалів при землетрусах, риття траншей та прокладання колонних шляхів.</p>
+                
+                <div class="image-gallery">
+                    <div class="img-box"><img src="img\ur1.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img\ur2.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img\ur3.jpg" alt=" "></div>
+                </div>
+
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchTab(event, 'sarm-1')">САРМ (Рятувальники)</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'sarm-2')">Шляхопрокладачі (БАТ)</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'sarm-3')">Котлованні (МДК/БТМ)</button>
+                </div>
+
+                <div id="sarm-1" class="tab-content active">
+                    <h3>САРМ (Спеціальні Аварійно-Рятувальні Машини)</h3>
+                    <div class="table-responsive">
+                        <table>
+                            <tr><th>Тип САРМ</th><th>База / Екіпаж</th><th>Можливості та Обладнання</th></tr>
+                            <tr><td>САРМ-Л (Легкий)</td><td>Легковик 4х4 (2-4 чол)</td><td>Гідрорізаки (сталь до 10мм), пневмодомкрати (до 18т), бензорізи. Розвідка.</td></tr>
+                            <tr><td>САРМ-С (Середній)</td><td>ЗИЛ-131, Mercedes 1222 (4-6 чол)</td><td>Розсув завалів на 750-1200мм, підйом плит до 24т, генератори освітлення.</td></tr>
+                            <tr><td>САРМ-В (Важкий)</td><td>КрАЗ, МАЗ (6-10 чол)</td><td>Крани-маніпулятори, відкачування води, підйом до 68т (при наявності автокранів).</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="sarm-2" class="tab-content">
+                    <h3>Важкі шляхопрокладачі (БАТ-М, БАТ-2)</h3>
+                    <p>Створені на базі важких артилерійських тягачів (АТ-Т). Призначені для прокладання шляхів, засипання вирв від вибухів, розчищення снігу.</p>
+                    <ul>
+                        <li><strong>БАТ-М (виріб 405 МУ):</strong> Робочий орган — бульдозерний відвал змінної геометрії (може бути двовідвальним (клин), бульдозерним або грейдерним).</li>
+                        <li><strong>БАТ-2:</strong> Більш сучасна версія на базі тягача МТ-Т. Оснащена розпушувачем для мерзлого ґрунту і крановою установкою.</li>
+                    </ul>
+                </div>
+
+                <div id="sarm-3" class="tab-content">
+                    <h3>Землерийні машини (МДК, БТМ)</h3>
+                    <ul>
+                        <li><strong>МДК-3 (Машина дорожньо-котлованна):</strong> Фрезерно-роторна машина на шасі МТ-Т. Здатна за лічені хвилини викопати котлован для танка чи укриття шириною до 3,5 м і глибиною 3,5 м. Грунт викидається метальником вбік на 10 метрів.</li>
+                        <li><strong>БТМ-3 (Швидкісна траншейна машина):</strong> Роторний екскаватор на базі АТ-Т. Залишає за собою готову траншею для піхоти зі швидкістю до 800 метрів за годину. Має спеціальний ходозменшувач (зменшувач швидкості 2,6).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="water" class="content-section">
+            <div class="card">
+                <span class="badge">РХБЗ та Інженерне забезпечення</span>
+                <h1>Форсування та Спецобробка (ПМП, ПТС, АРС)</h1>
+                <p>Окрема категорія інженерних військ, яка займається забезпеченням переправи через річки та очищенням техніки від радіаційного (РР) та хімічного (ОР) забруднення.</p>
+                
+                <div class="image-gallery">
+                    <div class="img-box"><img src="img\ft1.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img\ft2.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img\ft3.jpg" alt=" "></div>
+                </div>
+
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchTab(event, 'water-1')">Переправа (ПМП / ПТС)</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'water-2')">Очищення води (ВФС)</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'water-3')">Дезактивація (АРС)</button>
+                </div>
+
+                <div id="water-1" class="tab-content active">
+                    <h3>Переправочно-десантні засоби</h3>
+                    <ul>
+                        <li><strong>ПМП (Понтонно-мостовой парк):</strong> Комплект наплавного мосту, який перевозиться на вантажівках (КрАЗ-255Б/6322). Ланки мосту скидаються у воду, самі розкриваються і зчіплюються в суцільний міст довжиною 227 м (з вантажопідйомністю 60 т — пропускає танки).</li>
+                        <li><strong>ПТС-2 (Плаваючий транспортер):</strong> Гусенична амфібія. Здатна брати в кузов вантажівку типу "Урал", гаубицю або до 70 десантників і перепливати річку зі швидкістю до 12 км/год.</li>
+                    </ul>
+                </div>
+
+                <div id="water-2" class="tab-content">
+                    <h3>Очищення питної води</h3>
+                    <p>В умовах зараженої місцевості війська та рятувальники використовують спеціальні фільтрувальні станції:</p>
+                    <ul>
+                        <li><strong>ВФС-2,5:</strong> Продуктивність 2,5 кубометра чистої води на годину. Здійснює коагуляцію, фільтрування через сорбенти, знезараження і дезактивацію води з боліт і річок.</li>
+                        <li><strong>МАФС-3:</strong> Модернізована автомобільна фільтрувальна станція. Проводить глибоке очищення води від радіоактивних (РР) і отруйних (ОР) речовин за допомогою спеціальних полімерних і вугільних фільтрів.</li>
+                    </ul>
+                </div>
+
+                <div id="water-3" class="tab-content">
+                    <h3>Дезактивація та Дегазація</h3>
+                    <ul>
+                        <li><strong>АРС-14:</strong> Автомобільна розливна станція (на базі ЗИЛ-131). Цистерна на 2500 літрів зі спецрозчинами. Обробляє місцевість (ширина смуги 4,5-5 м, швидкість 5-7 км/год), а також "змиває" радіацію або хімію з броні танків водою під великим тиском (через брандспойти).</li>
+                        <li><strong>ДДА-66:</strong> Дезінфекційно-душова установка (на базі ГАЗ-66). Розгортає душові палатки. Вода гріється паровим котлом. Використовується для повної санітарної обробки (миття) особового складу, що вийшов із зони зараження, та дезінфекції їхнього одягу.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
+            
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('open');
+            }
+            
+            document.querySelector('.main-content').scrollTop = 0;
+        }
+
+        function switchTab(evt, tabId) {
+            let container = evt.currentTarget.closest('.card');
+            
+            container.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            container.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            container.querySelector('#' + tabId).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+
+        function toggleMenu() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open');
+        }
+    </script>
+</body>
+</html>
