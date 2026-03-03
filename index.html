@@ -19,6 +19,8 @@
             --warning-bg: #fffbeb;
             --warning-text: #b45309;
             --warning-border: #f59e0b;
+            --pdf-green: #10b981;
+            --pdf-hover: #059669;
         }
 
         * { box-sizing: border-box; }
@@ -284,6 +286,16 @@
 
         .tab-content.active { display: block; }
 
+        /* PDF Actions */
+        .pdf-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; margin-top: 10px; }
+        .download-btn {
+            display: inline-flex; align-items: center; background-color: var(--pdf-green);
+            color: white; padding: 12px 20px; text-decoration: none; border-radius: 8px;
+            font-weight: bold; transition: 0.3s; border: none; font-size: 14px;
+        }
+        .download-btn:hover { background-color: var(--pdf-hover); transform: translateY(-2px); }
+        .pdf-viewer { width: 100%; height: 75vh; border: 1px solid var(--border); border-radius: 8px; background: #f1f5f9; }
+
         /* Mobile Menu Button */
         .mobile-toggle {
             display: none;
@@ -344,6 +356,7 @@
                 border-left: 5px solid var(--accent);
                 border-bottom: 1px solid var(--border);
             }
+            .pdf-viewer { height: 50vh; }
         }
     </style>
 </head>
@@ -362,6 +375,8 @@
             <li><a href="#" onclick="showSection('cat')">Caterpillar 428F <span>▶</span></a></li>
             <li><a href="#" onclick="showSection('sarm')">Інженерна (САРМ, БАТ) <span>▶</span></a></li>
             <li><a href="#" onclick="showSection('water')">Форсування та Вода <span>▶</span></a></li>
+            <li><a href="#" onclick="showSection('hmmwv')">HMMWV / M1083 <span>▶</span></a></li>
+            <li><a href="#" onclick="showSection('cars')">Легкові авто <span>▶</span></a></li>
         </ul>
     </div>
 
@@ -374,9 +389,9 @@
                 <p>Модернізована бойова колісна плаваюча машина (8х8). Призначена для вогневої підтримки та транспортування особового складу (10 осіб). Оснащена двома двигунами та водометним рушієм.</p>
                 
                 <div class="image-gallery">
-                    <div class="img-box"><img src="img\btr1.jpg" alt=" "></div>
-                    <div class="img-box"><img src="img\btr2.jpg" alt=" "></div>
-                    <div class="img-box"><img src="img\btr3.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img/btr1.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img/btr2.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img/btr3.jpg" alt=" "></div>
                 </div>
 
                 <div class="tabs">
@@ -384,6 +399,7 @@
                     <button class="tab-btn" onclick="switchTab(event, 'btr-2')">Озброєння та Зв'язок</button>
                     <button class="tab-btn" onclick="switchTab(event, 'btr-3')">Водомет та Рух</button>
                     <button class="tab-btn" onclick="switchTab(event, 'btr-4')">ППО та ФВУ</button>
+                    <button class="tab-btn" style="color: var(--pdf-green);" onclick="switchTab(event, 'btr-pdf')">👁 Документація PDF</button>
                 </div>
 
                 <div id="btr-1" class="tab-content active">
@@ -431,6 +447,15 @@
                         4. Відкривається балон і подається вогнегасна суміш (фреон).
                     </p>
                 </div>
+
+                <div id="btr-pdf" class="tab-content">
+                    <div class="pdf-actions">
+                        <a href="img/pdf/Бронетранспортер БТР_70Т.pdf" class="download-btn" download>📥 БТР-70Т.pdf</a>
+                        <a href="img/pdf/Posobie BTR-80.pdf" class="download-btn" download>📥 Posobie BTR-80.pdf</a>
+                        <a href="img/pdf/BTR-70 to ie.pdf" class="download-btn" download>📥 BTR-70 to ie.pdf</a>
+                    </div>
+                    <iframe src="img/pdf/Бронетранспортер БТР_70Т.pdf" class="pdf-viewer"></iframe>
+                </div>
             </div>
         </div>
 
@@ -441,9 +466,9 @@
                 <p>Трьохосьовий гігант (6х6). Здатен транспортувати вантажі, солдатів, артилерійські системи та важкі причепи повному бездоріжжі, сніговій цілині та сипучих пісках.</p>
                 
                 <div class="image-gallery">
-                    <div class="img-box"><img src="img\kr1.jpg" alt=" "></div>
-                    <div class="img-box"><img src="img\kr2.jpg" alt=" "></div>
-                    <div class="img-box"><img src="img\kr3.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img/kr1.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img/kr2.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img/kr3.jpg" alt=" "></div>
                 </div>
 
                 <div class="tabs">
@@ -451,6 +476,7 @@
                     <button class="tab-btn" onclick="switchTab(event, 'kraz-2')">Двигун та Трансмісія</button>
                     <button class="tab-btn" onclick="switchTab(event, 'kraz-3')">Лебідка та Буксирування</button>
                     <button class="tab-btn" onclick="switchTab(event, 'kraz-4')">Електро та Пневматика</button>
+                    <button class="tab-btn" style="color: var(--pdf-green);" onclick="switchTab(event, 'kraz-pdf')">👁 Документація PDF</button>
                 </div>
 
                 <div id="kraz-1" class="tab-content active">
@@ -491,6 +517,14 @@
                         <li><strong>Електрофакельний пристрій (ЕФУ):</strong> Використовується для полегшення пуску дизеля в морози (до -25°С). Забороняється використовувати ЕФУ разом з ефірними засобами пуску (може статися вибух в колекторі).</li>
                     </ul>
                 </div>
+
+                <div id="kraz-pdf" class="tab-content">
+                    <div class="pdf-actions">
+                        <a href="img/pdf/Руководство краз 6322.pdf" class="download-btn" download>📥 Руководство КрАЗ 6322.pdf</a>
+                        <a href="img/pdf/5233ВЕ-016-3902010 У РЭ. Укр. версія.pdf" class="download-btn" download>📥 КрАЗ-5233ВЕ.pdf</a>
+                    </div>
+                    <iframe src="img/pdf/Руководство краз 6322.pdf" class="pdf-viewer"></iframe>
+                </div>
             </div>
         </div>
 
@@ -501,9 +535,9 @@
                 <p>Еталон прохідності. Завдяки системі регулювання тиску в шинах та потужним дизелям ЯМЗ, Урал-4320 здатен рухатись по розмитих ґрунтових дорогах, сніговій цілині та долати броди глибиною до 1,5 м.</p>
                 
                 <div class="image-gallery">
-                    <div class="img-box"><img src="img\ur1.jpg" alt=" "></div>
-                    <div class="img-box"><img src="img\ur3.jpg" alt=" "></div>
-                    <div class="img-box"><img src="img\ur2.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img/ur1.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img/ur3.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img/ur2.jpg" alt=" "></div>
                 </div>
 
                 <div class="tabs">
@@ -511,6 +545,7 @@
                     <button class="tab-btn" onclick="switchTab(event, 'ural-2')">Підвіска та Шини</button>
                     <button class="tab-btn" onclick="switchTab(event, 'ural-3')">Кермо та Гальма</button>
                     <button class="tab-btn" onclick="switchTab(event, 'ural-4')">Норми та Ресурс</button>
+                    <button class="tab-btn" style="color: var(--pdf-green);" onclick="switchTab(event, 'ural-pdf')">👁 Документація PDF</button>
                 </div>
 
                 <div id="ural-1" class="tab-content active">
@@ -551,6 +586,13 @@
                         <strong>Правила утилізації (після вичерпання ресурсу 10+ років):</strong> Автомобіль необхідно вимити, зняти АКБ, злити електроліт у спецпосуд, злити охолоджуючу рідину (тосол/антифриз) та всі трансмісійні і моторні масла у відповідні ємності для уникнення забруднення екології.
                     </div>
                 </div>
+
+                <div id="ural-pdf" class="tab-content">
+                    <div class="pdf-actions">
+                        <a href="img/pdf/Урал-4320 ТО.pdf" class="download-btn" download>📥 Урал-4320 ТО.pdf</a>
+                    </div>
+                    <iframe src="img/pdf/Урал-4320 ТО.pdf" class="pdf-viewer"></iframe>
+                </div>
             </div>
         </div>
 
@@ -561,9 +603,9 @@
                 <p>Сільськогосподарський трактор 3-4 тягового класу з шарнірно-зчленованою рамою (ламається навпіл для повороту). Ідеальний для енергоємного обробітку ґрунту (оранка) та буксування важких сільгосп-причепів.</p>
                 
                 <div class="image-gallery">
-                    <div class="img-box"><img src="img\xt1.png" alt=" "></div>
-                    <div class="img-box"><img src="img\xt2.jpg" alt=" "></div>
-                    <div class="img-box"><img src="img\xt3.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img/xt1.png" alt=" "></div>
+                    <div class="img-box"><img src="img/xt2.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img/xt3.jpg" alt=" "></div>
                 </div>
 
                 <div class="tabs">
@@ -571,6 +613,7 @@
                     <button class="tab-btn" onclick="switchTab(event, 'xtz-2')">Гідравліка та ВОМ</button>
                     <button class="tab-btn" onclick="switchTab(event, 'xtz-3')">Кабіна та Електрика</button>
                     <button class="tab-btn" onclick="switchTab(event, 'xtz-4')">Моменти затягування</button>
+                    <button class="tab-btn" style="color: var(--pdf-green);" onclick="switchTab(event, 'xtz-pdf')">👁 Документація PDF</button>
                 </div>
 
                 <div id="xtz-1" class="tab-content active">
@@ -614,6 +657,13 @@
                         <li>Пальці гідроциліндрів рульового управління (повороту рами): 300-350 Н·м.</li>
                     </ul>
                 </div>
+
+                <div id="xtz-pdf" class="tab-content">
+                    <div class="pdf-actions">
+                        <a href="img/pdf/XT3-150k.pdf" class="download-btn" download>📥 XT3-150k.pdf</a>
+                    </div>
+                    <iframe src="img/pdf/XT3-150k.pdf" class="pdf-viewer"></iframe>
+                </div>
             </div>
         </div>
 
@@ -624,15 +674,16 @@
                 <p>Малогабаритні комерційні авто. Базовий фургон 2705 вміщує до 9 м³ вантажу (максимальна маса 3.5 т). Автобуси 3221 вміщують до 13 пасажирів і використовуються як маршрутні таксі.</p>
                 
                 <div class="image-gallery">
-                    <div class="img-box"><img src="img\gz1.png" alt=" "></div>
-                    <div class="img-box"><img src="img\gz2.jpg" alt=" "></div>
-                    <div class="img-box"><img src="img\gz3.jpeg" alt=" "></div>
+                    <div class="img-box"><img src="img/gz1.png" alt=" "></div>
+                    <div class="img-box"><img src="img/gz2.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img/gz3.jpeg" alt=" "></div>
                 </div>
 
                 <div class="tabs">
                     <button class="tab-btn active" onclick="switchTab(event, 'gaz-1')">Двигуни ЗМЗ/УМЗ</button>
                     <button class="tab-btn" onclick="switchTab(event, 'gaz-2')">Ходова та Гальма</button>
                     <button class="tab-btn" onclick="switchTab(event, 'gaz-3')">Ремонтні зазори (Двигун)</button>
+                    <button class="tab-btn" style="color: var(--pdf-green);" onclick="switchTab(event, 'gaz-pdf')">👁 Документація PDF</button>
                 </div>
 
                 <div id="gaz-1" class="tab-content active">
@@ -666,6 +717,13 @@
                         <li>Обов'язкова теплова обробка (нагрівання ГБЦ) перед запресовкою напрямних втулок.</li>
                     </ul>
                 </div>
+
+                <div id="gaz-pdf" class="tab-content">
+                    <div class="pdf-actions">
+                        <a href="img/pdf/ГАЗель 2705.pdf" class="download-btn" download>📥 ГАЗель 2705.pdf</a>
+                    </div>
+                    <iframe src="img/pdf/ГАЗель 2705.pdf" class="pdf-viewer"></iframe>
+                </div>
             </div>
         </div>
 
@@ -676,15 +734,16 @@
                 <p>Багатоцільова машина світового класу. Поєднує спереду великий навантажувальний ковш, а ззаду — повноцінну стрілу екскаватора. Відрізняється надзвичайною плавністю гідравліки завдяки системі Load Sensing.</p>
                 
                 <div class="image-gallery">
-                    <div class="img-box"><img src="img\kt1.jpg" alt=" "></div>
-                    <div class="img-box"><img src="img\kt2.jpg" alt=" "></div>
-                    <div class="img-box"><img src="img\kt3.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img/kt1.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img/kt2.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img/kt3.jpg" alt=" "></div>
                 </div>
 
                 <div class="tabs">
                     <button class="tab-btn active" onclick="switchTab(event, 'cat-1')">Маси та Двигун</button>
                     <button class="tab-btn" onclick="switchTab(event, 'cat-2')">Гідравліка та Ковші</button>
                     <button class="tab-btn" onclick="switchTab(event, 'cat-3')">Технології (E-Coat)</button>
+                    <button class="tab-btn" style="color: var(--pdf-green);" onclick="switchTab(event, 'cat-pdf')">👁 Документація PDF</button>
                 </div>
 
                 <div id="cat-1" class="tab-content active">
@@ -710,6 +769,13 @@
                     <p><strong>E-Coat (Електрофорезне покриття):</strong> Всі металеві деталі рами та кузова проходять хімічну підготовку та занурення у ванну з антикорозійним складом (електроосадження). Це повністю запобігає появі іржі, подряпин та сколів навіть у жорстких будівельних умовах.</p>
                     <p><strong>Ride Control:</strong> Опціональна система регулювання плавності ходу (гідропневматичні акумулятори), яка гасить коливання стріли навантажувача під час руху по ямах, не даючи матеріалу висипатися з ковша.</p>
                 </div>
+
+                <div id="cat-pdf" class="tab-content">
+                    <div class="pdf-actions">
+                        <a href="img/pdf/428F.pdf" class="download-btn" download>📥 Скачати 428F.pdf</a>
+                    </div>
+                    <iframe src="img/pdf/428F.pdf" class="pdf-viewer"></iframe>
+                </div>
             </div>
         </div>
 
@@ -720,15 +786,16 @@
                 <p>Комплекси для усунення наслідків катастроф, розбору бетонних завалів при землетрусах, риття траншей та прокладання колонних шляхів.</p>
                 
                 <div class="image-gallery">
-                    <div class="img-box"><img src="img\ur1.jpg" alt=" "></div>
-                    <div class="img-box"><img src="img\ur2.jpg" alt=" "></div>
-                    <div class="img-box"><img src="img\ur3.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img/ur1.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img/ur2.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img/ur3.jpg" alt=" "></div>
                 </div>
 
                 <div class="tabs">
                     <button class="tab-btn active" onclick="switchTab(event, 'sarm-1')">САРМ (Рятувальники)</button>
                     <button class="tab-btn" onclick="switchTab(event, 'sarm-2')">Шляхопрокладачі (БАТ)</button>
                     <button class="tab-btn" onclick="switchTab(event, 'sarm-3')">Котлованні (МДК/БТМ)</button>
+                    <button class="tab-btn" style="color: var(--pdf-green);" onclick="switchTab(event, 'sarm-pdf')">👁 Документація PDF</button>
                 </div>
 
                 <div id="sarm-1" class="tab-content active">
@@ -759,6 +826,16 @@
                         <li><strong>БТМ-3 (Швидкісна траншейна машина):</strong> Роторний екскаватор на базі АТ-Т. Залишає за собою готову траншею для піхоти зі швидкістю до 800 метрів за годину. Має спеціальний ходозменшувач (зменшувач швидкості 2,6).</li>
                     </ul>
                 </div>
+
+                <div id="sarm-pdf" class="tab-content">
+                    <div class="pdf-actions">
+                        <a href="img/pdf/ІНЖЕНЕРНА ТЕХНІКА. Частина 1(6.2013).pdf" class="download-btn" download>📥 ІНЖЕНЕРНА ТЕХНІКА Частина 1.pdf</a>
+                        <a href="img/pdf/ІНЖЕНЕРНА ТЕХНІКА. Частина 2(7.2013).pdf" class="download-btn" download>📥 ІНЖЕНЕРНА ТЕХНІКА Частина 2.pdf</a>
+                        <a href="img/pdf/Інженерні машини.pdf" class="download-btn" download>📥 Інженерні машини.pdf</a>
+                        <a href="img/pdf/rukovodstvo_dizel_d245_7e2_d245_9e2_d245_30e2.pdf" class="download-btn" download>📥 Двигун Д-245.pdf</a>
+                    </div>
+                    <iframe src="img/pdf/Інженерні машини.pdf" class="pdf-viewer"></iframe>
+                </div>
             </div>
         </div>
 
@@ -769,15 +846,16 @@
                 <p>Окрема категорія інженерних військ, яка займається забезпеченням переправи через річки та очищенням техніки від радіаційного (РР) та хімічного (ОР) забруднення.</p>
                 
                 <div class="image-gallery">
-                    <div class="img-box"><img src="img\ft1.jpg" alt=" "></div>
-                    <div class="img-box"><img src="img\ft2.jpg" alt=" "></div>
-                    <div class="img-box"><img src="img\ft3.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img/ft1.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img/ft2.jpg" alt=" "></div>
+                    <div class="img-box"><img src="img/ft3.jpg" alt=" "></div>
                 </div>
 
                 <div class="tabs">
                     <button class="tab-btn active" onclick="switchTab(event, 'water-1')">Переправа (ПМП / ПТС)</button>
                     <button class="tab-btn" onclick="switchTab(event, 'water-2')">Очищення води (ВФС)</button>
                     <button class="tab-btn" onclick="switchTab(event, 'water-3')">Дезактивація (АРС)</button>
+                    <button class="tab-btn" style="color: var(--pdf-green);" onclick="switchTab(event, 'water-pdf')">👁 Документація PDF</button>
                 </div>
 
                 <div id="water-1" class="tab-content active">
@@ -803,6 +881,52 @@
                         <li><strong>АРС-14:</strong> Автомобільна розливна станція (на базі ЗИЛ-131). Цистерна на 2500 літрів зі спецрозчинами. Обробляє місцевість (ширина смуги 4,5-5 м, швидкість 5-7 км/год), а також "змиває" радіацію або хімію з броні танків водою під великим тиском (через брандспойти).</li>
                         <li><strong>ДДА-66:</strong> Дезінфекційно-душова установка (на базі ГАЗ-66). Розгортає душові палатки. Вода гріється паровим котлом. Використовується для повної санітарної обробки (миття) особового складу, що вийшов із зони зараження, та дезінфекції їхнього одягу.</li>
                     </ul>
+                </div>
+
+                <div id="water-pdf" class="tab-content">
+                     <p><i>Специфічних PDF для цієї категорії не знайдено, але ви можете ознайомитись із загальними військовими посібниками:</i></p>
+                     <div class="pdf-actions">
+                         <a href="img/pdf/ПОСІБНИК_ПОСІБНИК_З_ТЕХНІЧН... _ТА_РЕМОНТУ,_ВКЛЮЧАЮЧИ.pdf" class="download-btn" download>📥 Загальний посібник ТО та ремонту.pdf</a>
+                     </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="hmmwv" class="content-section">
+            <div class="card">
+                <span class="badge">Військові Автомобілі (Закордонні)</span>
+                <h1>HMMWV та Вантажівки M1083</h1>
+                <p>Документація та посібники з ремонту і обслуговування колісної техніки іноземного виробництва.</p>
+                <div class="tabs">
+                    <button class="tab-btn active" style="color: var(--pdf-green);" onclick="switchTab(event, 'hmmwv-pdf')">👁 Документація PDF</button>
+                </div>
+                <div id="hmmwv-pdf" class="tab-content active">
+                    <div class="pdf-actions">
+                        <a href="img/pdf/Обслуговування,_ремонт,_номер... _та_інструменти_для_HMMWV.pdf" class="download-btn" download>📥 Обслуговування та інструменти HMMWV.pdf</a>
+                        <a href="img/pdf/Обслуговування_та_ремонт_HMMWV_різних_модифікацій_.pdf" class="download-btn" download>📥 Ремонт HMMWV різних модифікацій.pdf</a>
+                        <a href="img/pdf/Інструкція_до_сімейства_середніх... чних_вантажівок_M1083,_6x6.pdf" class="download-btn" download>📥 Інструкція вантажівок M1083.pdf</a>
+                    </div>
+                    <iframe src="img/pdf/Обслуговування_та_ремонт_HMMWV_різних_модифікацій_.pdf" class="pdf-viewer"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <div id="cars" class="content-section">
+            <div class="card">
+                <span class="badge">Легкові Автомобілі</span>
+                <h1>Skoda, Chevrolet Niva, Dacia Duster</h1>
+                <p>Експлуатаційна документація для позашляховиків та легкових автомобілів.</p>
+                <div class="tabs">
+                    <button class="tab-btn active" style="color: var(--pdf-green);" onclick="switchTab(event, 'cars-pdf')">👁 Документація PDF</button>
+                </div>
+                <div id="cars-pdf" class="tab-content active">
+                    <div class="pdf-actions">
+                        <a href="img/pdf/Skoda Octavia Tour.pdf" class="download-btn" download>📥 Skoda Octavia Tour.pdf</a>
+                        <a href="img/pdf/Skoda Octavia Tour (2).pdf" class="download-btn" download>📥 Skoda Octavia Tour (Частина 2).pdf</a>
+                        <a href="img/pdf/Chevrolet Niva s 2009_ZR11_niva-club.net.pdf" class="download-btn" download>📥 Chevrolet Niva 2009.pdf</a>
+                        <a href="img/pdf/Dacia-duster-ben-diesel.pdf" class="download-btn" download>📥 Dacia Duster.pdf</a>
+                    </div>
+                    <iframe src="img/pdf/Skoda Octavia Tour.pdf" class="pdf-viewer"></iframe>
                 </div>
             </div>
         </div>
